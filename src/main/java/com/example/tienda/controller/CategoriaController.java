@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -45,6 +44,6 @@ public class CategoriaController {
 
     @PutMapping("/categoria/{id}")
     public ResponseEntity<CategoriaResponse> updateCategoria(@PathVariable Long id, @RequestBody CategoriaRequest cat) {
-        return ResponseEntity.ok(HttpStatus.ACCEPTED).ok(this.categoriaService.updateCategoria(id, cat));
+        return ResponseEntity.ok(this.categoriaService.updateCategoria(id, cat));
     }
 }
