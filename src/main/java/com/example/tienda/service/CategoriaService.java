@@ -56,8 +56,16 @@ public class CategoriaService {
         Categoria updateCat = this.categoriaRepository.findById(id)
                 .orElseThrow(() -> new CategoriaException("la categoria con id" + id + " no existe"));
         updateCat.setNombre(categoria.getNombre());
-        updateCat.setDescripcion(updateCat.getDescripcion());
+        updateCat.setDescripcion(categoria.getDescripcion());
 
         return convertirCategoria(this.categoriaRepository.save(updateCat));
+    }
+
+    public void deleteCategoria(Long id) {
+        if (this.categoriaRepository.existsById(id)) {
+            this.categoriaRepository.deleteById(id);
+            throw new CategoriaException("la categoria se elimino correctamente");
+        }
+        throw new CategoriaException("la categoria no existe ");
     }
 }

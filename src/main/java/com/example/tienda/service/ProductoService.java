@@ -37,4 +37,14 @@ public class ProductoService {
         return pr.stream().map(p -> convertirProductoResponse(p)).toList();
     }
 
+    public List<ProductoResponse> getFilterProductos(double min, double max) {
+
+        List<Producto> pr = this.productoRepository.getProdcutofiltadoPrecio(min, max);
+        return pr.stream().map(p -> convertirProductoResponse(p)).toList();
+    }
+
+    public List<ProductoResponse> getProductosByCategoria(Long id) {
+        List<Producto> newPr = this.productoRepository.getProductoById(id);
+        return newPr.stream().map(p -> convertirProductoResponse(p)).toList();
+    }
 }

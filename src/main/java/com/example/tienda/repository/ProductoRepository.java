@@ -8,9 +8,18 @@ import com.example.tienda.model.Producto;
 import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    List<Producto> findByNombre(String nombre);
+        List<Producto> findByNombre(String nombre);
 
-    @Query("SELECT p FROM Producto p WHERE p.precio >= :precio")
-    List<Producto> getProductosPrecio(
-            @Param("precio") double precio);
+        @Query("SELECT p FROM Producto p WHERE p.precio = :precio")
+        List<Producto> getProductosPrecio(
+                        @Param("precio") double precio);
+
+        @Query("SELECT p  FROM Producto p where p.precio >= :min AND p.precio <= :max ")
+        List<Producto> getProdcutofiltadoPrecio(
+                        @Param("min") double min,
+                        @Param("max") double max);
+
+        @Query("SELECT p FROM Producto p where  p.categoria.id= :idCategoria")
+        List<Producto> getProductoById(
+                        @Param("idCategoria") Long idCategoria);
 }
