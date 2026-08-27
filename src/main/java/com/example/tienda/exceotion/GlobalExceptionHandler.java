@@ -16,4 +16,10 @@ public class GlobalExceptionHandler {
                 .body(new Error(401, "error en operacion de categoria", exception.getMessage()));
 
     }
+
+    @ExceptionHandler(ProductoExcepption.class)
+    public ResponseEntity<Error> exceptionProducto(ProductoExcepption excepption) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new Error(401, "Erroe en producto", excepption.getMessage()));
+    }
 }

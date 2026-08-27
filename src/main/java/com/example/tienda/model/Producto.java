@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
 public class Producto {
     @Id
@@ -19,7 +18,7 @@ public class Producto {
     private double precio;
     private int stock;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Categoria categoria;
 
@@ -35,11 +34,11 @@ public class Producto {
         this.categoria = categoria;
     }
 
-    public Producto(Long id, String nombre, double precio, int stock) {
-        this.id = id;
+    public Producto(String nombre, double precio, int stock, Categoria categoria) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
+        this.categoria = categoria;
 
     }
 
