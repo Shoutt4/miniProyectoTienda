@@ -20,6 +20,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductoExcepption.class)
     public ResponseEntity<Error> exceptionProducto(ProductoExcepption excepption) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new Error(401, "Erroe en producto", excepption.getMessage()));
+                .body(new Error(400, "Erroe en producto", excepption.getMessage()));
     }
 }

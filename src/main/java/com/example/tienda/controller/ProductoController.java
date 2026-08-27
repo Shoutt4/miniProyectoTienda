@@ -1,5 +1,6 @@
 package com.example.tienda.controller;
 
+import com.example.tienda.repository.ProductoRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tienda.dto.ProductoRequest;
@@ -23,10 +24,12 @@ import java.util.List;
 @RestController
 public class ProductoController {
 
+    private final ProductoRepository productoRepository;
     private final ProductoService productoService;
 
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService, ProductoRepository productoRepository) {
         this.productoService = productoService;
+        this.productoRepository = productoRepository;
     }
 
     @PostMapping("/producto")
@@ -63,5 +66,16 @@ public class ProductoController {
     @GetMapping("/productos/categoria/{idCategoria}")
     public ResponseEntity<List<ProductoResponse>> getProductoByCategoria(@PathVariable Long idCategoria) {
         return ResponseEntity.ok(this.productoService.getProductosByCategoria(idCategoria));
+    }
+
+    @GetMapping("/productos/ordebyAsc/{id}")
+    public ResponseEntity<List<ProductoResponse>> getProductosAsc(@PathVariable Long id) {
+
+        return ResponseEntity.ok(this.productoService.getProductosOrderByAsc(id));
+    }
+
+    @GetMapping("/Productos/Desc/{id}")
+    public ResponseEntity<List<ProductoResponse>> getProdtuctosDesc(@PathVariable Long id) {
+        return ResponseEntity.ok(this.productoService.getProductosOrderByDesc(id));
     }
 }

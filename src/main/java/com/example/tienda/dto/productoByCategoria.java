@@ -8,7 +8,7 @@ public class productoByCategoria {
     private String nombre;
     private double precio;
     private int stock;
-    private Categoria categoria;
+    private CategoriaResponse categoria;
 
     public productoByCategoria() {
 
@@ -20,7 +20,7 @@ public class productoByCategoria {
             String nombre,
             double precio,
             int stock,
-            Categoria categoria) {
+            CategoriaResponse categoria) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -29,7 +29,7 @@ public class productoByCategoria {
 
     }
 
-    public Categoria getCategoria() {
+    public CategoriaResponse getCategoria() {
         return categoria;
     }
 

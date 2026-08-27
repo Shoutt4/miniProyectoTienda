@@ -10,7 +10,13 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
         List<Producto> findByNombre(String nombre);
 
-        @Query("SELECT p FROM Producto p WHERE p.precio = :precio")
+        List<Producto> findByCategoriaId(Long categoria);
+
+        List<Producto> findByCategoriaIdOrderByPrecioAsc(Long categoria);
+
+        List<Producto> findByCategoriaIdOrderByPrecioDesc(Long categoria);
+
+        @Query("SELECT p FROM Producto p WHERE p.precio < :precio")
         List<Producto> getProductosPrecio(
                         @Param("precio") double precio);
 
@@ -19,7 +25,4 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("min") double min,
                         @Param("max") double max);
 
-        @Query("SELECT p FROM Producto p where  p.categoria.id= :idCategoria")
-        List<Producto> getProductoById(
-                        @Param("idCategoria") Long idCategoria);
 }

@@ -3,6 +3,7 @@ package com.example.tienda.service;
 import com.example.tienda.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
+import com.example.tienda.dto.CategoriaResponse;
 import com.example.tienda.dto.ProductoRequest;
 import com.example.tienda.dto.ProductoResponse;
 import com.example.tienda.dto.productoByCategoria;
@@ -42,7 +43,9 @@ public class ProductoService {
     }
 
     public productoByCategoria convertirConCategoria(Producto pr) {
-        return new productoByCategoria(pr.getId(), pr.getNombre(), pr.getPrecio(), pr.getStock(), pr.getCategoria());
+        CategoriaResponse cat = new CategoriaResponse(pr.getCategoria().getId(), pr.getCategoria().getNombre(),
+                pr.getCategoria().getDescripcion());
+        return new productoByCategoria(pr.getId(), pr.getNombre(), pr.getPrecio(), pr.getStock(), cat);
     }
 
     public productoByCategoria getProductoById(Long id) {
@@ -69,12 +72,41 @@ public class ProductoService {
 
     public List<ProductoResponse> getFilterProductos(double min, double max) {
 
-        List<Producto> pr = this.productoRepository.getProdcutofiltadoPrecio(min, max);
-        return pr.stream().map(p -> convertirProductoResponse(p)).toList();
+        if ((min > 0 && min < max) && (max > 0 & max > min)) {
+            List<Producto> pr = this.productoRepository.getProdcutofiltadoPrecio(min, max);
+            return pr.stream().map(p -> convertirProductoResponse(p)).toList();
+        } else {
+            throw new ProductoExcepption("datos invalidos de min max deben ser positivos");
+        }
+
     }
 
     public List<ProductoResponse> getProductosByCategoria(Long id) {
-        List<Producto> newPr = this.productoRepository.getProductoById(id);
-        return newPr.stream().map(p -> convertirProductoResponse(p)).toList();
+
+        if (this.categoriaRepository.existsById(id)) {
+            List<Producto> newPr = this.productoRepository.findByCategoriaId(id);
+            return newPr.stream().map(p -> convertirProductoResponse(p)).toList();
+        } else {
+            throw new CategoriaException("la categoria no existe");
+        }
+    }
+
+    public List<ProductoResponse> getProductosOrderByAsc(Long id) {
+
+        if (this.categoriaRepository.existsById(id)) {
+            List<Producto> pr = this.productoRepository.findByCategoriaIdOrderByPrecioAsc(id);
+            return pr.stream().map(p -> convertirProductoResponse(p)).toList();
+        } else {
+            throw new CategoriaException("categoria no encontra en productos");
+        }
+    }
+
+    public List<ProductoResponse> getProductosOrderByDesc(Long id) {
+        if (this.categoriaRepository.existsById(id)) {
+            List<Producto> pr = this.productoRepository.findByCategoriaIdOrderByPrecioDesc(id);
+            return pr.stream().map(p -> convertirProductoResponse(p)).toList();
+        } else {
+            throw new CategoriaException("categoria no exitenten");
+        }
     }
 }

@@ -19,7 +19,7 @@ public class Producto {
     private int stock;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
+
     private Categoria categoria;
 
     public Producto() {
