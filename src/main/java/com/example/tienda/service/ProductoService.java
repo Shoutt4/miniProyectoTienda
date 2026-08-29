@@ -1,6 +1,8 @@
 package com.example.tienda.service;
 
 import com.example.tienda.repository.CategoriaRepository;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.tienda.dto.CategoriaResponse;
@@ -12,6 +14,7 @@ import com.example.tienda.exceotion.ProductoExcepption;
 import com.example.tienda.model.Categoria;
 import com.example.tienda.model.Producto;
 import com.example.tienda.repository.ProductoRepository;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -108,5 +111,10 @@ public class ProductoService {
         } else {
             throw new CategoriaException("categoria no exitenten");
         }
+    }
+
+    public Page<ProductoResponse> getPageable(Pageable page) {
+        Page<Producto> pr = this.productoRepository.findAll(page);
+        return pr.map(p -> convertirProductoResponse(p));
     }
 }

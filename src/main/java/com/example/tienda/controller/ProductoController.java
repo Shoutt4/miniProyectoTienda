@@ -11,6 +11,8 @@ import com.example.tienda.service.ProductoService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -77,5 +79,10 @@ public class ProductoController {
     @GetMapping("/Productos/Desc/{id}")
     public ResponseEntity<List<ProductoResponse>> getProdtuctosDesc(@PathVariable Long id) {
         return ResponseEntity.ok(this.productoService.getProductosOrderByDesc(id));
+    }
+
+    @GetMapping("/productos/pagination")
+    public ResponseEntity<Page<ProductoResponse>> getPagination(Pageable pageable) {
+        return ResponseEntity.ok(this.productoService.getPageable(pageable));
     }
 }
