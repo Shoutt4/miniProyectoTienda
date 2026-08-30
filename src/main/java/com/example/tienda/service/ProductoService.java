@@ -3,6 +3,7 @@ package com.example.tienda.service;
 import com.example.tienda.repository.CategoriaRepository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.tienda.dto.CategoriaResponse;
@@ -14,6 +15,8 @@ import com.example.tienda.exceotion.ProductoExcepption;
 import com.example.tienda.model.Categoria;
 import com.example.tienda.model.Producto;
 import com.example.tienda.repository.ProductoRepository;
+import com.example.tienda.specification.ProductoSpecification;
+
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -116,5 +119,17 @@ public class ProductoService {
     public Page<ProductoResponse> getPageable(Pageable page) {
         Page<Producto> pr = this.productoRepository.findAll(page);
         return pr.map(p -> convertirProductoResponse(p));
+    }
+
+    public Page<ProductoResponse> productoPr(String nombre, Pageable page) {
+        Page<Producto> pr = this.productoRepository.findByNombreContainingIgnoreCase(nombre, page);
+        return pr.map(this::convertirProductoResponse);
+    }
+
+    public Page<ProductoResponse> getSpeicfication(String nombre, double precio, Pageable page) {
+        Specification<Producto> pr = ProductoSpecification.nombreCotrains(nombre);
+        Specification<Producto> precios = ProductoSpecification.precioMayorIgual(precio);
+        Page<Producto> prNew = this.productoRepository.findAll(pr, precios, page);
+        return prNew.map(this::convertirProductoResponse);
     }
 }

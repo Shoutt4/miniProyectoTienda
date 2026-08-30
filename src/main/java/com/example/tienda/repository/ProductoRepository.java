@@ -3,13 +3,16 @@ package com.example.tienda.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.tienda.model.Producto;
+import com.example.tienda.specification.ProductoSpecification;
+
 import java.util.List;
 
-public interface ProductoRepository extends JpaRepository<Producto, Long> {
+public interface ProductoRepository extends JpaRepository<Producto, Long>, JpaSpecificationExecutor<Producto> {
         List<Producto> findByNombre(String nombre);
 
         List<Producto> findByCategoriaId(Long categoria);
@@ -17,6 +20,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
         List<Producto> findByCategoriaIdOrderByPrecioAsc(Long categoria);
 
         List<Producto> findByCategoriaIdOrderByPrecioDesc(Long categoria);
+
+        Page<Producto> findByNombreContainingIgnoreCase(String nombre, Pageable page);
 
         Page<Producto> findAll(Pageable page);
 
@@ -29,4 +34,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                         @Param("min") double min,
                         @Param("max") double max);
 
+        
 }

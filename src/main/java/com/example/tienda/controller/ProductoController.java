@@ -85,4 +85,17 @@ public class ProductoController {
     public ResponseEntity<Page<ProductoResponse>> getPagination(Pageable pageable) {
         return ResponseEntity.ok(this.productoService.getPageable(pageable));
     }
+
+    @GetMapping("/productos/pageable")
+    public ResponseEntity<Page<ProductoResponse>> getProductosByNombrePage(@RequestParam String nombre,
+            Pageable pageable) {
+        return ResponseEntity.ok(this.productoService.productoPr(nombre, pageable));
+    }
+
+    @GetMapping("/productos/specification")
+
+    public ResponseEntity<Page<ProductoResponse>> pageableSpecification(@RequestParam String nombre,
+            @RequestParam double precio, Pageable page) {
+        return ResponseEntity.ok(this.productoService.getSpeicfication(nombre, precio, page));
+    }
 }
