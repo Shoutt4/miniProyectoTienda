@@ -1,5 +1,6 @@
 package com.example.tienda.specification;
 
+import com.example.tienda.model.Categoria;
 import com.example.tienda.model.Producto;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -14,7 +15,19 @@ public class ProductoSpecification {
 
     public static Specification<Producto> precioMayorIgual(double precio) {
         return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.greaterThan(root.get("precio"), precio);
+            return criteriaBuilder.greaterThanOrEqualTo(root.get("precio"), precio);
+        };
+    }
+
+    public static Specification<Producto> getProductosMenor(double precio) {
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.lessThanOrEqualTo(root.get("precio"), precio);
+        };
+    }
+
+    public static Specification<Producto> filterByCategoria(Long categoriaId) {
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("categoria").get("id"), categoriaId);
         };
     }
 }

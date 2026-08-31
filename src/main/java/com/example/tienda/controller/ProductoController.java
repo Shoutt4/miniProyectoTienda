@@ -94,8 +94,12 @@ public class ProductoController {
 
     @GetMapping("/productos/specification")
 
-    public ResponseEntity<Page<ProductoResponse>> pageableSpecification(@RequestParam String nombre,
-            @RequestParam double precio, Pageable page) {
-        return ResponseEntity.ok(this.productoService.getSpeicfication(nombre, precio, page));
+    public ResponseEntity<Page<ProductoResponse>> pageableSpecification(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max,
+            @RequestParam(required = false) Long categoria,
+            Pageable page) {
+        return ResponseEntity.ok(this.productoService.getSpeicfication(nombre, min, max, categoria, page));
     }
 }

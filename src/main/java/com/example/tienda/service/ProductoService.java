@@ -3,6 +3,7 @@ package com.example.tienda.service;
 import com.example.tienda.repository.CategoriaRepository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.PredicateSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -126,10 +127,28 @@ public class ProductoService {
         return pr.map(this::convertirProductoResponse);
     }
 
-    public Page<ProductoResponse> getSpeicfication(String nombre, double precio, Pageable page) {
-        Specification<Producto> pr = ProductoSpecification.nombreCotrains(nombre);
-        Specification<Producto> precios = ProductoSpecification.precioMayorIgual(precio);
-        Page<Producto> prNew = this.productoRepository.findAll(pr, precios, page);
+    public Page<ProductoResponse> getSpeicfication(String nombre, Double min, Double max, Long categoriaId,
+            Pageable page) {
+
+        Specification<Producto> filtro = null;
+        if (nombre != null) {
+            filtro = ProductoSpecification.nombreCotrains(nombre);
+        }
+        if (min != null) {
+            filtro = filtro == null ? ProductoSpecification.precioMayorIgual(min)
+                    : filtro.and(ProductoSpecification.precioMayorIgual(min));
+        }
+        if (max != null) {
+            filtro = filtro == null ? ProductoSpecification.getProductosMenor(max)
+                    : filtro.and(ProductoSpecification.getProductosMenor(max));
+        }
+        if (categoriaId != null) {
+
+            filtro = filtro == null ? ProductoSpecification.filterByCategoria(categoriaId)
+                    : filtro.and(ProductoSpecification.filterByCategoria(categoriaId));
+        }
+
+        Page<Producto> prNew = this.productoRepository.findAll(filtro, page);
         return prNew.map(this::convertirProductoResponse);
     }
 }
