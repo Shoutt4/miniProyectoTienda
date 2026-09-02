@@ -99,7 +99,16 @@ public class ProductoController {
             @RequestParam(required = false) Double min,
             @RequestParam(required = false) Double max,
             @RequestParam(required = false) Long categoria,
+            @RequestParam(required = false) Integer stock,
             Pageable page) {
-        return ResponseEntity.ok(this.productoService.getSpeicfication(nombre, min, max, categoria, page));
+        return ResponseEntity.ok(this.productoService.getProductosPageables(nombre, min, max, stock, categoria, page));
     }
+
+    @GetMapping("/productos/byStock")
+    public ResponseEntity<Page<ProductoResponse>> getProductosByStock(@RequestParam(required = false) Integer stock,
+            Pageable page) {
+
+        return ResponseEntity.ok(this.productoService.getProductoByStock(stock, page));
+    }
+
 }

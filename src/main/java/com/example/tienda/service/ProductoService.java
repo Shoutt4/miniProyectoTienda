@@ -151,4 +151,42 @@ public class ProductoService {
         Page<Producto> prNew = this.productoRepository.findAll(filtro, page);
         return prNew.map(this::convertirProductoResponse);
     }
+
+    public Page<ProductoResponse> getProductosPageables(String nombre, Double min, Double max, Integer stock,
+            Long categoriaId,
+            Pageable Page) {
+        Specification<Producto> filtro = Specification.allOf();
+
+        if (nombre != null) {
+            filtro = filtro.and(ProductoSpecification.nombreCotrains(nombre));
+        }
+        if (min != null) {
+
+            filtro = filtro.and(ProductoSpecification.precioMayorIgual(min));
+        }
+        if (max != null) {
+            filtro = filtro.and(ProductoSpecification.getProductosMenor(max));
+        }
+        if (categoriaId != null) {
+            filtro = filtro.and(ProductoSpecification.filterByCategoria(categoriaId));
+
+        }
+        if (stock != null) {
+            filtro = filtro.and(ProductoSpecification.filterByStock(stock));
+        }
+        return this.productoRepository.findAll(filtro, Page).map(this::convertirProductoResponse);
+
+    }
+
+    public Page<ProductoResponse> getProductoByStock(Integer stock, Boolean estado, Pageable page) {
+        Specification<Producto> filtro = Specification.allOf();
+        if (stock != null) {
+            filtro = filtro.and(ProductoSpecification.filterByStock(stock));
+        }
+        if (estado != null && estado) {
+            filtro = filtro.and(ProductoSpecification.fitberByStockDisponible());
+        }
+
+        return this.productoRepository.findAll(filtro, page).map(this::convertirProductoResponse);
+    }
 }

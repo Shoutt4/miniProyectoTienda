@@ -30,4 +30,17 @@ public class ProductoSpecification {
             return criteriaBuilder.equal(root.get("categoria").get("id"), categoriaId);
         };
     }
+
+    public static Specification<Producto> filterByStock(int stock) {
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.get("stock"), stock);
+        };
+    }
+
+    public static Specification<Producto> fitberByStockDisponible() {
+
+        return (root, query, critero) -> {
+            return critero.greaterThan(root.get("stock"), 0);
+        };
+    }
 }
