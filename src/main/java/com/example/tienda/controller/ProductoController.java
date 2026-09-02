@@ -105,10 +105,12 @@ public class ProductoController {
     }
 
     @GetMapping("/productos/byStock")
-    public ResponseEntity<Page<ProductoResponse>> getProductosByStock(@RequestParam(required = false) Integer stock,
+    public ResponseEntity<Page<ProductoResponse>> getProductosByStock(
+            @RequestParam(required = false) Integer stock,
+            @RequestParam(required = false) Boolean stado,
             Pageable page) {
 
-        return ResponseEntity.ok(this.productoService.getProductoByStock(stock, page));
+        return ResponseEntity.ok(this.productoService.getProductoByStock(stock, stado, page));
     }
 
 }
