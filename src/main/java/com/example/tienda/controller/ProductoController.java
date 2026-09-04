@@ -100,8 +100,10 @@ public class ProductoController {
             @RequestParam(required = false) Double max,
             @RequestParam(required = false) Long categoria,
             @RequestParam(required = false) Integer stock,
+            @RequestParam(required = false) Boolean estado,
             Pageable page) {
-        return ResponseEntity.ok(this.productoService.getProductosPageables(nombre, min, max, stock, categoria, page));
+        return ResponseEntity
+                .ok(this.productoService.getProductosPageables(nombre, min, max, stock, categoria, estado, page));
     }
 
     @GetMapping("/productos/byStock")

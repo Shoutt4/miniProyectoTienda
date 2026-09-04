@@ -43,4 +43,12 @@ public class ProductoSpecification {
             return critero.greaterThan(root.get("stock"), 0);
         };
     }
+
+    public static Specification<Producto> fitberByPrecioMayor(double precio) {
+        return (root, query, criteroBuilder) -> {
+            return criteroBuilder.greaterThan(root.get("precio"), precio);
+        };
+    }
+
+    
 }

@@ -33,7 +33,7 @@ public class ProductoService {
         this.categoriaRepository = categoriaRepository;
     }
 
-    public Producto convertirProductoRequest(ProductoRequest producto, Categoria cat) {
+    public static Producto convertirProductoRequest(ProductoRequest producto, Categoria cat) {
 
         return new Producto(producto.getNombre(), producto.getPrecio(), producto.getStock(), cat);
     }
@@ -154,6 +154,7 @@ public class ProductoService {
 
     public Page<ProductoResponse> getProductosPageables(String nombre, Double min, Double max, Integer stock,
             Long categoriaId,
+            Boolean estado,
             Pageable Page) {
         Specification<Producto> filtro = Specification.allOf();
 
@@ -173,6 +174,9 @@ public class ProductoService {
         }
         if (stock != null) {
             filtro = filtro.and(ProductoSpecification.filterByStock(stock));
+        }
+        if (estado != null) {
+            filtro = filtro.and(ProductoSpecification.fitberByStockDisponible());
         }
         return this.productoRepository.findAll(filtro, Page).map(this::convertirProductoResponse);
 
