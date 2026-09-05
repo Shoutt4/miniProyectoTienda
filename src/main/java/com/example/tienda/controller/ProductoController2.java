@@ -23,10 +23,17 @@ public class ProductoController2 {
 
     @GetMapping("/filter")
     public ResponseEntity<Page<ProductoResponse>> getProductosBySpecification(
-            @RequestParam(required = false) @Size(max = 100) String nombre,
-            @RequestParam(required = false) @Positive Double min,
-            @RequestParam(required = false) @Positive Double max,
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max,
+            @RequestParam(required = false) Boolean estado,
+            @RequestParam(required = false) Long idCategoria,
+            @RequestParam(required = false) Integer minStock,
+            @RequestParam(required = false) Integer maxStock,
+
             Pageable page) {
-        return ResponseEntity.ok(this.productoService2.getProductosFilterBySpecification(nombre, min, max, page));
+        return ResponseEntity
+                .ok(this.productoService2.getProductosFilterBySpecification(nombre, min, max, estado, idCategoria,
+                        minStock, maxStock, page));
     }
 }

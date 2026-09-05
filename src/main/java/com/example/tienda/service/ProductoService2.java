@@ -30,17 +30,41 @@ public class ProductoService2 {
     }
 
     public Page<ProductoResponse> getProductosFilterBySpecification(String nombre, Double min, Double max,
+            Boolean estado, Long idCategoria, Integer minStock, Integer maxStock,
             Pageable page) {
 
         Specification<Producto> pr = Specification.allOf();
+        if (min != null && min < 0) {
+            return Page.empty(page);
+        }
+
+        if (max != null && max < 0) {
+            return Page.empty(page);
+        }
+
+        if (min != null && max != null && min > max) {
+            return Page.empty(page);
+        }
         if (nombre != null) {
             pr = pr.and(PrSpecification.lookForName(nombre));
         }
-        if (min != null && min > 0 & (min < max)) {
+        if (min != null && min >= 0) {
             pr = pr.and(PrSpecification.lookForPrice(min));
         }
-        if (max != null & max > 0 & (max > min)) {
+        if (max != null && max >= 0) {
             pr = pr.and(PrSpecification.lookForPriceLess(max));
+        }
+        if (Boolean.TRUE.equals(estado) && (min == null)) {
+            pr = pr.and(PrSpecification.lookForStock());
+        }
+        if (idCategoria != null && idCategoria > 0) {
+            pr = pr.and(PrSpecification.lookForCategoria(idCategoria));
+        }
+        if (minStock != null && minStock >= 0) {
+            pr = pr.and(PrSpecification.getMenorStock(maxStock));
+        }
+        if (maxStock != null && maxStock >= 0) {
+            pr = pr.and(PrSpecification.getmayorStock(minStock));
         }
         return this.productoRepository.findAll(pr, page).map(this::convertirProductoResponse);
     }

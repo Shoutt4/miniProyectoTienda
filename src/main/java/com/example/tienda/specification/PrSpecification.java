@@ -7,7 +7,7 @@ public class PrSpecification {
 
     public static Specification<Producto> lookForName(String nombre) {
         return (root, query, criterioBuilder) -> {
-            return criterioBuilder.equal(root.get("nombre"), nombre);
+            return criterioBuilder.like(root.get("nombre"), "%" + nombre + "%");
         };
     }
 
@@ -26,6 +26,24 @@ public class PrSpecification {
     public static Specification<Producto> lookForStock() {
         return (root, query, criterioBuilder) -> {
             return criterioBuilder.greaterThan(root.get("stock"), 0);
+        };
+    }
+
+    public static Specification<Producto> lookForCategoria(Long categoriaId) {
+        return (root, query, crterioBuilder) -> {
+            return crterioBuilder.equal(root.get("categoria").get("id"), categoriaId);
+        };
+    }
+
+    public static Specification<Producto> getmayorStock(int stok) {
+        return (root, query, criterio) -> {
+            return criterio.greaterThanOrEqualTo(root.get("stock"), stok);
+        };
+    }
+
+    public static Specification<Producto> getMenorStock(int stock) {
+        return (root, query, criterio) -> {
+            return criterio.lessThanOrEqualTo(root.get("stock"), stock);
         };
     }
 }
