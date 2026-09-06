@@ -45,6 +45,9 @@ public class ProductoService2 {
         if (min != null && max != null && min > max) {
             return Page.empty(page);
         }
+        if (idCategoria != null && idCategoria <= 0) {
+            throw new IllegalArgumentException("la categoria no debe ser menor a 0");
+        }
         if (nombre != null) {
             pr = pr.and(PrSpecification.lookForName(nombre));
         }
@@ -57,10 +60,13 @@ public class ProductoService2 {
         if (Boolean.TRUE.equals(estado) && (min == null)) {
             pr = pr.and(PrSpecification.lookForStock());
         }
-        if (idCategoria != null && idCategoria > 0) {
+        if (idCategoria != null) {
             pr = pr.and(PrSpecification.lookForCategoria(idCategoria));
         }
-        if (minStock != null && minStock >= 0) {
+        if (minStock != null && minStock <= 0) {
+            throw new IllegalArgumentException("error en la stock debe ser mayor o igual a 0");
+        }
+        if (minStock != null) {
             pr = pr.and(PrSpecification.getMenorStock(maxStock));
         }
         if (maxStock != null && maxStock >= 0) {

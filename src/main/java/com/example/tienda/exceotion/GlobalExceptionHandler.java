@@ -22,4 +22,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new Error(400, "Erroe en producto", excepption.getMessage()));
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ResponseError> exceptionArguments(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(new ResponseError(ex.getMessage()));
+    }
 }
