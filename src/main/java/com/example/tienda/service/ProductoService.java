@@ -13,6 +13,7 @@ import com.example.tienda.dto.ProductoResponse;
 import com.example.tienda.dto.productoByCategoria;
 import com.example.tienda.exceotion.CategoriaException;
 import com.example.tienda.exceotion.ProductoExcepption;
+import com.example.tienda.exceotion.ProductoNotFoundException;
 import com.example.tienda.model.Categoria;
 import com.example.tienda.model.Producto;
 import com.example.tienda.repository.ProductoRepository;
@@ -94,7 +95,7 @@ public class ProductoService {
             List<Producto> newPr = this.productoRepository.findByCategoriaId(id);
             return newPr.stream().map(p -> convertirProductoResponse(p)).toList();
         } else {
-            throw new CategoriaException("la categoria no existe");
+            throw new ProductoNotFoundException("error");
         }
     }
 
