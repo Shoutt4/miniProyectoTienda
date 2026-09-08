@@ -41,8 +41,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseError("error", res.getMessage()));
     }
 
-    @ExceptionHandler(ProductoNotFoundException.class)
-    public ResponseEntity<ErrorResponseAlt> errorElaborado(ProductoNotFoundException err) {
-        return ResponseEntity.badRequest().body(new ErrorResponseAlt(404, "error", err.getMessage()));
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponseAlt> errorElaborado(ApiException err) {
+        return ResponseEntity.status(err.getStatus()).body(new ErrorResponseAlt(err));
     }
 }

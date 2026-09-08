@@ -8,10 +8,10 @@ public class ErrorResponseAlt {
     private String message;
     private LocalDateTime timestamp;
 
-    public ErrorResponseAlt(int status, String error, String message) {
-        this.status = status;
-        this.error = error;
-        this.message = message;
+    public ErrorResponseAlt(ApiException ex) {
+        this.status = ex.getStatus().value();
+        this.error = ex.getStatus().name();
+        this.message = ex.getMessage();
         this.timestamp = LocalDateTime.now();
     }
 

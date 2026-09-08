@@ -4,11 +4,14 @@ import com.example.tienda.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 import com.example.tienda.repository.ProductoRepository;
 import com.example.tienda.specification.PrSpecification;
+
+import org.springframework.transaction.annotation.Transactional;
 import com.example.tienda.service.ProductoService;
+import java.util.List;
+import javax.management.RuntimeErrorException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
 import com.example.tienda.dto.ProductoResponse;
 import com.example.tienda.model.Producto;
 
@@ -73,6 +76,20 @@ public class ProductoService2 {
             pr = pr.and(PrSpecification.getmayorStock(minStock));
         }
         return this.productoRepository.findAll(pr, page).map(this::convertirProductoResponse);
+    }
+
+    @Transactional
+    public void pruebaTransaccion() {
+        Producto pr1 = new Producto("ddaa", 100, 20, null);
+        this.productoRepository.save(pr1);
+        Producto pr2 = new Producto("aaadd", 10, 1, null);
+        this.productoRepository.save(pr2);
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductoResponse> getAlll() {
+        return this.productoRepository.findAll().stream().map(this::convertirProductoResponse).toList();
     }
 
 }

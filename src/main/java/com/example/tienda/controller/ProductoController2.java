@@ -7,11 +7,15 @@ import com.example.tienda.service.ProductoService2;
 
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController()
 public class ProductoController2 {
@@ -35,5 +39,22 @@ public class ProductoController2 {
         return ResponseEntity
                 .ok(this.productoService2.getProductosFilterBySpecification(nombre, min, max, estado, idCategoria,
                         minStock, maxStock, page));
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> createTest() {
+        this.productoService2.pruebaTransaccion();
+        return ResponseEntity.ok("todo 10/10");
+    }
+
+    @GetMapping("/test2")
+    public ResponseEntity<List<ProductoResponse>> getALL() {
+
+        return ResponseEntity.ok(this.productoService2.getAlll());
+    }
+
+    @GetMapping("/publico")
+    public String publico() {
+        return "Endpoint publico";
     }
 }
