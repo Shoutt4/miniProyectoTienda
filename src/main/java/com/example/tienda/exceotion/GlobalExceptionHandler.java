@@ -1,8 +1,12 @@
 package com.example.tienda.exceotion;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -45,4 +49,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseAlt> errorElaborado(ApiException err) {
         return ResponseEntity.status(err.getStatus()).body(new ErrorResponseAlt(err));
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> errores = new HashMap<>();
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error -> errores.put(
+                        error.getField(),
+                        error.getDefaultMessage()));
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("message", "errores de variables");
+        respuesta.put("errores", errores);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
+    }
+
+    
 }
