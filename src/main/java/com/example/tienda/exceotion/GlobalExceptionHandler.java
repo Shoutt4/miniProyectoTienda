@@ -3,14 +3,13 @@ package com.example.tienda.exceotion;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-
+import org.springframework.security.authentication.BadCredentialsException;
 import com.example.tienda.dto.Error;
 
 @RestControllerAdvice
@@ -65,5 +64,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
-    
+    @ExceptionHandler(AutchException.class)
+    public ResponseEntity<Map<String, String>> response(AutchException ex) {
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("errors", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(respuesta);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> erorLogin(BadCredentialsException ex) {
+        Map<String, String> error = new HashMap<>();
+
+        error.put("error", "error al intentar logear");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
 }
